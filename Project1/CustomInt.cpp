@@ -1,4 +1,4 @@
-#include "CustomInt.h"
+﻿#include "CustomInt.h"
 
 CustomInt::CustomInt() {
 }
@@ -177,6 +177,15 @@ CustomInt& CustomInt::operator/=(const CustomInt& right) {
 			m_value.clear();
 			return *this;
 		}
+
+		//сокращение на 0
+		while (m_value.back() == 0 && right_abs.m_value.back() == 0) {
+			m_value.pop_back();
+			right_abs.m_value.pop_back();
+		}
+
+		if(right_abs == 1)
+			return *this;
 
 		CustomInt result;
 		bool flag = true;
