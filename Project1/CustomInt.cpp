@@ -12,7 +12,7 @@ CustomInt::CustomInt(const std::string& str) {
 		for (int i = 0; i < str.size() - m_isNegative; i++)
 			m_value.push_back((str[i + m_isNegative] - 48));
 
-		cleanFrontZeroes(m_value);
+		cleanFrontZeroes();
 	}
 
 	catch (const std::exception& exception) {
@@ -41,15 +41,14 @@ CustomInt::CustomInt(std::list<uint16_t>::iterator begin, std::list<uint16_t>::i
 
 CustomInt::CustomInt(long value) {
 	try {
-
 		m_isNegative = value < 0;
-
+		value = std::abs(value);
 		while (value != 0) {
-			m_value.push_front(value % 10);
+			m_value.push_front(value % long(10));
 			value /= 10;
 		}
 
-		cleanFrontZeroes(m_value);
+		cleanFrontZeroes();
 	}
 
 	catch (const std::exception& exception) {
@@ -148,21 +147,21 @@ CustomInt& CustomInt::operator*=(const CustomInt& right) {
 			remindor = current_value / 10;
 			currentValue->m_value.push_front(current_value % 10);
 		}
+		if (remindor != 0)
+			currentValue->m_value.push_front(remindor);
 		result_for_sum.push_back(currentValue);
 	}
-	if (remindor != 0)
-		result_for_sum.back()->m_value.push_front(remindor);
 
-	CustomInt result;
+	CustomInt result(0);
 	for (int i = 0; i < result_for_sum.size(); i++)
 		result += *result_for_sum[i];
 
 	for (int i = 0; i < result_for_sum.size(); i++)
 		delete result_for_sum[i];
 
-	cleanFrontZeroes(result.m_value);
 	m_value = result.m_value;
 	m_isNegative = m_isNegative == right.isNegative() ? 0 : 1;
+	cleanFrontZeroes();
 
 	return *this;
 }
@@ -173,55 +172,53 @@ CustomInt& CustomInt::operator/=(const CustomInt& right) {
 			throw std::exception("Error! Devision on zero!");
 		CustomInt right_abs = right.abs();
 
-		if (*this < right_abs) {
+		if (this->abs() < right_abs) {
 			m_value.clear();
+			m_isNegative = false;
 			return *this;
 		}
 
-		//сокращение на 0
+		//zero reduction
 		while (m_value.back() == 0 && right_abs.m_value.back() == 0) {
 			m_value.pop_back();
 			right_abs.m_value.pop_back();
 		}
-
+		//return if deviding on 1 (make algorithm faster in some cases when operating with powers on 10) 
 		if(right_abs == 1)
 			return *this;
 
 		CustomInt result;
-		bool flag = true;
 		auto cur_left = m_value.begin();
 		auto cur_right = m_value.begin();
-		for (int i = 0; i < right.m_value.size() -1; i++)
+		for (int i = 0; i < right_abs.m_value.size() -1; i++)
 			cur_right++;
 
 		CustomInt cur_part = CustomInt(cur_left, cur_right);
-		for (int i = 0; i <= right.m_value.size() - m_value.size(); i++) {
+		for (int i = 0; i <= right_abs.m_value.size() - m_value.size(); i++) {
 			uint16_t curValue = 9;
 			while (cur_part < (right_abs * curValue))
 				curValue--;
 
 			if (curValue == 0) {
-				if (onlyZeroesLeft(cur_right, m_value.end()) && cur_part == 0) {
-					while (cur_right != m_value.end()) {
-						result.m_value.push_back(0);
-						cur_right++;
-					}
-					break;
-				}
-
 				cur_right++;
-				if (cur_right == m_value.end())
+				if (cur_right == m_value.end()) {
+					result.m_value.push_back(0);
 					break;
+				}					
+
 				cur_part = cur_part * 10 + *cur_right;
+				result.m_value.push_back(0);
 				continue;
 			}
 
 			result.m_value.push_back(curValue);
-			if (cur_right == m_value.end() || ++cur_right == m_value.end())
+
+			if (++cur_right == m_value.end())
 				break;
 
-			cur_part = (cur_part - (right_abs * curValue)) * 10 + *cur_right;
+			cur_part = (cur_part - (right_abs * curValue)) *10 + *cur_right;
 		}
+		result.cleanFrontZeroes();
 		m_value = result.m_value;
 		m_isNegative = m_isNegative == right.isNegative() ? 0 : 1;
 
@@ -266,6 +263,12 @@ void CustomInt::piecewiseAddition(const CustomInt& right) {
 
 		else {
 			while (right_iter != right.m_value.rend()) {
+				if (*right_iter + reminder > 9) {
+					m_value.push_front((*right_iter + reminder) % 10);
+					reminder = (*right_iter + reminder) / 10;
+					right_iter++;
+					continue;
+				}
 				m_value.push_front(*right_iter + reminder);
 				right_iter++;
 				reminder = 0;
@@ -279,6 +282,8 @@ void CustomInt::piecewiseAddition(const CustomInt& right) {
 
 	if (reminder != 0)
 		m_value.push_front(reminder);
+
+	cleanFrontZeroes();
 }
 
 void CustomInt::piecewiseSubstraction(const CustomInt& right) {
@@ -286,8 +291,8 @@ void CustomInt::piecewiseSubstraction(const CustomInt& right) {
 
 	//result is 0 if they are equal
 	if (greatest == nullptr) {
-		m_isNegative = false;
 		m_value.clear();
+		m_isNegative = false;
 		return;
 	}
 
@@ -327,20 +332,20 @@ void CustomInt::piecewiseSubstraction(const CustomInt& right) {
 			great_iter++;
 		}
 	}
-	cleanFrontZeroes(result);
 	m_value = result;
+	cleanFrontZeroes();
 }
 
-void CustomInt::cleanFrontZeroes(std::list<uint16_t>& value) {
+void CustomInt::cleanFrontZeroes() {
 	int count = 0;
-	for (auto iter = value.begin(); iter != value.end(); iter++) {
+	for (auto iter = m_value.begin(); iter != m_value.end(); iter++) {
 		if (*iter != 0)
 			break;
 
 		count++;
 	}
 	for (int i = 0; i < count; i++)
-		value.pop_front();
+		m_value.pop_front();
 }
 
 bool CustomInt::onlyZeroesLeft(std::list<uint16_t>::iterator left, std::list<uint16_t>::iterator right) {

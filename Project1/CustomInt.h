@@ -20,7 +20,8 @@ class CustomInt{
 	void piecewiseAddition(const CustomInt& right);
 	void piecewiseSubstraction(const CustomInt& right);
 
-	void cleanFrontZeroes(std::list<uint16_t>& value);
+	void cleanFrontZeroes();
+
 	bool onlyZeroesLeft(std::list<uint16_t>::iterator left, std::list<uint16_t>::iterator right);
 public:
 	CustomInt();
