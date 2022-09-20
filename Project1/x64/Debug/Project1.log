@@ -1,7 +1,6 @@
-﻿  CustomInt.cpp
-C:\Users\alext\OneDrive\Desktop\Interviews\LargeNumberCalc\Project1\Project1\CustomInt.h(64,67): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\alext\OneDrive\Desktop\Interviews\LargeNumberCalc\Project1\Project1\CustomInt.h(65,70): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\alext\OneDrive\Desktop\Interviews\LargeNumberCalc\Project1\Project1\CustomInt.h(96,67): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\alext\OneDrive\Desktop\Interviews\LargeNumberCalc\Project1\Project1\CustomInt.h(97,70): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\alext\OneDrive\Desktop\Interviews\LargeNumberCalc\Project1\Project1\CustomInt.cpp(207): warning C4715: 'CustomInt::operator/=': not all control paths return a value
+﻿  main.cpp
+C:\Users\alext\OneDrive\Desktop\Interviews\LargeNumberCalc\Project1\Project1\CustomInt.h(64,68): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\alext\OneDrive\Desktop\Interviews\LargeNumberCalc\Project1\Project1\CustomInt.h(65,71): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\alext\OneDrive\Desktop\Interviews\LargeNumberCalc\Project1\Project1\CustomInt.h(96,68): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\alext\OneDrive\Desktop\Interviews\LargeNumberCalc\Project1\Project1\CustomInt.h(97,71): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   Project1.vcxproj -> C:\Users\alext\OneDrive\Desktop\Interviews\LargeNumberCalc\Project1\x64\Debug\Project1.exe

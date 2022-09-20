@@ -14,7 +14,7 @@
 
 
 class CustomInt{
-	std::list<uint16_t> m_value;
+	std::list<uint16_t> *m_value = new std::list<uint16_t>();;
 	bool m_isNegative = false;
 	
 	void piecewiseAddition(const CustomInt& right);
@@ -61,10 +61,10 @@ public:
 
 // ------------------------ inline functions begin -----------------------
 inline bool operator< (const CustomInt& left, const CustomInt& right) {
-	int left_val = left.m_value.size() * (left.isNegative() ? -1 : 1);
-	int right_val = right.m_value.size() * (right.isNegative() ? -1 : 1);
+	int left_val = left.m_value->size() * (left.isNegative() ? -1 : 1);
+	int right_val = right.m_value->size() * (right.isNegative() ? -1 : 1);
 	//check by digits
-	if (left.m_value.size() != right.m_value.size())
+	if (left.m_value->size() != right.m_value->size())
 		return left_val < right_val;
 
 	//check by sign
@@ -74,10 +74,10 @@ inline bool operator< (const CustomInt& left, const CustomInt& right) {
 		return false;
 
 	//same length and signs
-	auto left_iterator = left.m_value.begin();
-	auto right_iterator = right.m_value.begin();
+	auto left_iterator = left.m_value->begin();
+	auto right_iterator = right.m_value->begin();
 
-	for (int i = 0; i < left.m_value.size(); i++) {
+	for (int i = 0; i < left.m_value->size(); i++) {
 		if (*left_iterator != *right_iterator)
 			return (*left_iterator < *right_iterator) /** left.isNegative()*/ ? 1 : 0;
 		left_iterator++;
@@ -93,10 +93,10 @@ inline bool operator> (const CustomInt& left, const CustomInt& right) {
 }
 
 inline bool operator<= (const CustomInt& left, const CustomInt& right) {
-	int left_val = left.m_value.size() * (left.isNegative() ? -1 : 1);
-	int right_val = right.m_value.size() * (right.isNegative() ? -1 : 1);
+	int left_val = left.m_value->size() * (left.isNegative() ? -1 : 1);
+	int right_val = right.m_value->size() * (right.isNegative() ? -1 : 1);
 	//check by digits
-	if (left.m_value.size() != right.m_value.size())
+	if (left.m_value->size() != right.m_value->size())
 		return left_val < right_val;
 
 	//check by sign
@@ -106,10 +106,10 @@ inline bool operator<= (const CustomInt& left, const CustomInt& right) {
 		return false;
 
 	//same length and signs
-	auto left_iterator = left.m_value.begin();
-	auto right_iterator = right.m_value.begin();
+	auto left_iterator = left.m_value->begin();
+	auto right_iterator = right.m_value->begin();
 
-	for (int i = 0; i < left.m_value.size(); i++) {
+	for (int i = 0; i < left.m_value->size(); i++) {
 		if (*left_iterator != *right_iterator)
 			return (*left_iterator < *right_iterator) * left.isNegative() ? 1 : 0;
 	}
@@ -123,7 +123,7 @@ inline bool operator>= (const CustomInt& left, const CustomInt& right) {
 }
 
 inline bool operator== (const CustomInt& left, const CustomInt& right) {
-	return left.m_value == right.m_value && left.isNegative() == right.isNegative();
+	return *left.m_value == *right.m_value && left.isNegative() == right.isNegative();
 }
 
 inline bool operator== (const CustomInt& left, int right) {

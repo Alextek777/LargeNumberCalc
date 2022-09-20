@@ -4,7 +4,7 @@
 
 namespace CustomChecks {
 	bool check_addition() {
-		for (int i = 0; i < 120; i++) {
+		for (int i = 0; i < 1200; i++) {
 			long standard_result;
 			long standard_value1 = rand() % 2000000 - 1000000;
 			long standard_value2 = rand() % 2000000 - 1000000;
@@ -26,7 +26,7 @@ namespace CustomChecks {
 	}
 
 	bool check_substraction() {
-		for (int i = 0; i < 120; i++) {
+		for (int i = 0; i < 1200; i++) {
 			long standard_result;
 			long standard_value1 = rand() % 2000000 - 1000000;
 			long standard_value2 = rand() % 2000000 - 1000000;
@@ -48,7 +48,7 @@ namespace CustomChecks {
 	}
 
 	bool check_multiplication() {
-		for (int i = 0; i < 120; i++) {
+		for (int i = 0; i < 1200; i++) {
 			long standard_result;
 			long standard_value1 = rand() % 2000 - 1000;
 			long standard_value2 = rand() % 2000 - 1000;
@@ -70,7 +70,7 @@ namespace CustomChecks {
 	}
 
 	bool check_division() {
-		for (int i = 0; i < 120; i++) {
+		for (int i = 0; i < 1200; i++) {
 			long standard_result;
 			long standard_value1 = rand() % 20000000 - 10000000;
 			long standard_value2 = rand() % 20000000 - 10000000;
