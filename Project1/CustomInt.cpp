@@ -4,59 +4,32 @@ CustomInt::CustomInt() {
 }
 
 CustomInt::CustomInt(const std::string& str) {
-	try{
+	if (str[0] == '-')
+		m_isNegative = true;
 
-		if (str[0] == '-')
-			m_isNegative = true;
+	for (int i = 0; i < str.size() - m_isNegative; i++)
+		m_value.push_back((str[i + m_isNegative] - 48));
 
-		for (int i = 0; i < str.size() - m_isNegative; i++)
-			m_value.push_back((str[i + m_isNegative] - 48));
-
-		cleanFrontZeroes();
-	}
-
-	catch (const std::exception& exception) {
-		std::cout << "Error : " << exception.what() << std::endl;
-	}
-	catch (...) {
-		std::cout << "Error : " << "undefined error";
-	}
+	cleanFrontZeroes();
 }
 
 CustomInt::CustomInt(std::list<uint16_t>::iterator begin, std::list<uint16_t>::iterator end) {
-	try {
-		while (begin != end) {
-			m_value.push_back(*begin);
-			begin++;
-		}
-		m_value.push_back(*end);
+	while (begin != end) {
+		m_value.push_back(*begin);
+		begin++;
 	}
-	catch (const std::exception& exception) {
-		std::cout << "Error : " << exception.what() << std::endl;
-	}
-	catch (...) {
-		std::cout << "Error : " << "undefined error";
-	}
+	m_value.push_back(*end);
 }
 
 CustomInt::CustomInt(long value) {
-	try {
-		m_isNegative = value < 0;
-		value = std::abs(value);
-		while (value != 0) {
-			m_value.push_front(value % long(10));
-			value /= 10;
-		}
-
-		cleanFrontZeroes();
+	m_isNegative = value < 0;
+	value = std::abs(value);
+	while (value != 0) {
+		m_value.push_front(value % long(10));
+		value /= 10;
 	}
 
-	catch (const std::exception& exception) {
-		std::cout << "Error : " << exception.what() << std::endl;
-	}
-	catch (...) {
-		std::cout << "Error : " << "undefined error";
-	}
+	cleanFrontZeroes();
 }
 
 CustomInt::~CustomInt() {

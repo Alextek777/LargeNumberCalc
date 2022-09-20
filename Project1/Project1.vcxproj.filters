@@ -26,5 +26,8 @@
     <ClInclude Include="CustomInt.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Checks.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
